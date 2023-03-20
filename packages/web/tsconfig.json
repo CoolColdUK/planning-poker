@@ -1,4 +1,5 @@
 {
+  "extends": "@planning-poker/ts-config",
   "compilerOptions": {
     "target": "ESNext",
     "useDefineForClassFields": true,
@@ -14,6 +15,9 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "noEmit": true,
+    "rootDir": ".",
+    "outDir": "dist",
+    "baseUrl": "./src",
     "jsx": "react-jsx"
   },
   "include": ["src"],

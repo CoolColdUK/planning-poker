@@ -13,10 +13,22 @@
     "react-dom": "^18.2.0"
   },
   "devDependencies": {
+    "@planning-poker/eslint-config": "^1.0.0",
+    "@planning-poker/jest-config": "^1.0.0",
+    "@planning-poker/ts-config": "^1.0.0",
     "@types/react": "^18.0.28",
     "@types/react-dom": "^18.0.11",
     "@vitejs/plugin-react": "^3.1.0",
     "typescript": "^4.9.3",
     "vite": "^4.2.0"
+  },
+  "eslintConfig": {
+    "extends": [
+      "@planning-poker/eslint-config/react"
+    ]
+  },
+  "jest": {
+    "preset": "@planning-poker/jest-config",
+    "rootDir": "./src"
   }
 }

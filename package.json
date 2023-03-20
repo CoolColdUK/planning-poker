@@ -16,6 +16,8 @@
   "scripts": {
     "fn:serve": "lerna exec --scope=@planning-poker/functions -- npm run serve",
     "fn:watch": "lerna exec --scope=@planning-poker/functions -- npm run watch",
+    "dev":"lerna exec --scope=@planning-poker/web -- npm run dev",
+    "build:web":"lerna exec --scope=@planning-poker/web -- npm run build",
     "format": "prettier --ignore-unknown --write ./packages/**/*.{ts,tsx}",
     "postinstall": "lerna bootstrap --force-local --hoist --concurrency=1",
     "prepare": "husky install",
