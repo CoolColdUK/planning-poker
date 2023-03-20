@@ -211,4 +211,8 @@ Type '{ path: string; component: any; }' is not assignable to type 'IntrinsicAtt
   ## Question 8
 
   Property 'onUserChanged' is missing in type '{}' but required in type 'LoginProps'.ts(2741)
+
+  ## Question 9
+
+  what should app.tsx look like now? also I have put all components in the `components` folder
   

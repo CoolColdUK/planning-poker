@@ -1,55 +1,37 @@
-import {Button, Container, createTheme, CssBaseline, ThemeProvider, Typography} from '@mui/material';
-import {onAuthStateChanged, signOut as firebaseSignOut, User} from 'firebase/auth';
-import {useEffect, useState} from 'react';
-import {firebaseAuth} from '../firebaseConfig';
-import Login from './Login';
+import {Button, Container, Typography} from '@mui/material';
+import {User} from 'firebase/auth';
+import {signOut} from '../firebaseConfig';
 
-const theme = createTheme();
+interface AppProps {
+  user: User | null;
+}
 
-export default function App() {
-  const [user, setUser] = useState<User | null>(null);
-
-  useEffect(() => {
-    const unsubscribe = onAuthStateChanged(firebaseAuth, (returnedUser) => {
-      setUser(returnedUser);
-    });
-    return () => unsubscribe();
-  }, []);
-
-  const signOut = async () => {
+export default function App({user}: AppProps) {
+  const handleSignOut = async () => {
     try {
-      await firebaseSignOut(firebaseAuth);
+      await signOut();
     } catch (error) {
       console.error(error);
     }
   };
 
   return (
-    <ThemeProvider theme={theme}>
-      <CssBaseline />
-      <Container
-        maxWidth="sm"
-        sx={{
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-          justifyContent: 'center',
-          minHeight: '100vh',
-        }}
-      >
-        {user ? (
-          <>
-            <Typography variant="h4" component="h1" gutterBottom>
-              Welcome, {user.displayName}
-            </Typography>
-            <Button variant="contained" color="secondary" onClick={signOut}>
-              Sign out
-            </Button>
-          </>
-        ) : (
-          <Login onUserChanged={setUser} />
-        )}
-      </Container>
-    </ThemeProvider>
+    <Container
+      maxWidth="sm"
+      sx={{
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'center',
+        minHeight: '100vh',
+      }}
+    >
+      <Typography variant="h4" component="h1" gutterBottom>
+        Welcome, {user?.displayName}
+      </Typography>
+      <Button variant="contained" color="primary" onClick={handleSignOut}>
+        Sign out
+      </Button>
+    </Container>
   );
 }
