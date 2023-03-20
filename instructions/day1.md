@@ -180,3 +180,25 @@ I am using material ui 5, the `import {createTheme} from '@mui/system';` is wron
 
 Now, lets work on the Login.tsx page. Do I move the login content from app.tsx to login.tsx, or is there anything else I need to put in there? we will also need to get the react router working
 
+## Question 6
+
+We are using vite instead of create-react-app, so it is main.tsx instead of index.tsx. The code looks like this
+```
+import React from 'react';
+import ReactDOM from 'react-dom/client';
+import App from './components/App';
+
+ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
+  <React.StrictMode>
+    <App />
+  </React.StrictMode>,
+);
+```
+should we put App.tsx in main.tsx instead? This would allow theme to be applied to the whole application.
+also the import should look like this in App.tsx
+```
+import {Button, Container, CssBaseline, ThemeProvider, Typography,createTheme} from '@mui/material';
+```
+
+the latest version of react does not require import React from 'react'
+maybe extract the container to the Login.tsx as well

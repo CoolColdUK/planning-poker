@@ -1,5 +1,5 @@
-import {Button, Container, CssBaseline, ThemeProvider, Typography, createTheme} from '@mui/material';
-import {GoogleAuthProvider, onAuthStateChanged, signInWithPopup, signOut as firebaseSignOut, User} from 'firebase/auth';
+import {Button, Container, createTheme, CssBaseline, ThemeProvider, Typography} from '@mui/material';
+import {onAuthStateChanged, signOut as firebaseSignOut, User} from 'firebase/auth';
 import {useEffect, useState} from 'react';
 import {firebaseAuth} from '../firebaseConfig';
 import Login from './Login';
@@ -15,15 +15,6 @@ export default function App() {
     });
     return () => unsubscribe();
   }, []);
-
-  const signInWithGoogle = async () => {
-    const provider = new GoogleAuthProvider();
-    try {
-      await signInWithPopup(firebaseAuth, provider);
-    } catch (error) {
-      console.error(error);
-    }
-  };
 
   const signOut = async () => {
     try {

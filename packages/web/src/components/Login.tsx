@@ -1,4 +1,3 @@
-import React from 'react';
 import {Button, Container, Typography} from '@mui/material';
 import {GoogleAuthProvider, signInWithPopup, User} from 'firebase/auth';
 import {firebaseAuth} from '../firebaseConfig';
