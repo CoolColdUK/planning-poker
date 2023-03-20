@@ -1,20 +1,21 @@
-import React, {useState, useEffect} from 'react';
-import firebase from 'firebase/app';
+import {GoogleAuthProvider, onAuthStateChanged, signInWithPopup, User} from 'firebase/auth';
+import {useEffect, useState} from 'react';
+import {firebaseAuth} from '../firebaseConfig';
 
-const App: React.FC = () => {
-  const [user, setUser] = useState<firebase.User | null>(null);
+export default function App() {
+  const [user, setUser] = useState<User | null>(null);
 
   useEffect(() => {
-    const unsubscribe = firebase.auth().onAuthStateChanged((user) => {
-      setUser(user);
+    const unsubscribe = onAuthStateChanged(firebaseAuth, (returnedUser) => {
+      setUser(returnedUser);
     });
     return () => unsubscribe();
   }, []);
 
   const signInWithGoogle = async () => {
-    const provider = new firebase.auth.GoogleAuthProvider();
+    const provider = new GoogleAuthProvider();
     try {
-      await firebase.auth().signInWithPopup(provider);
+      await signInWithPopup(firebaseAuth, provider);
     } catch (error) {
       console.error(error);
     }
@@ -22,7 +23,7 @@ const App: React.FC = () => {
 
   const signOut = async () => {
     try {
-      await firebase.auth().signOut();
+      await signOut();
     } catch (error) {
       console.error(error);
     }
@@ -40,6 +41,4 @@ const App: React.FC = () => {
       )}
     </div>
   );
-};
-
-export default App;
+}

@@ -110,3 +110,8 @@ I have done the following
 
 Effectively I have completed all steps including step 5. What is the code required for step 6 App.tsx?
 
+## Question 3
+
+Function component is not a function declarationeslintreact/function-component-definition)
+
+maybe use `export default function` instead for the component?
