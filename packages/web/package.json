@@ -6,6 +6,8 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
+    "lint": "eslint ./src/**/*.{ts,tsx}",
+    "lint:fix": "eslint --fix ./src/**/*.{ts,tsx}",
     "preview": "vite preview"
   },
   "dependencies": {
@@ -30,7 +32,12 @@
   "eslintConfig": {
     "extends": [
       "@planning-poker/eslint-config/react"
-    ]
+    ],
+    "parserOptions": {
+      "project": "tsconfig.json",
+      "tsconfigRootDir": ".",
+      "sourceType": "module"
+    }
   },
   "jest": {
     "preset": "@planning-poker/jest-config",

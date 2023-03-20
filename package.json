@@ -37,7 +37,7 @@
     "*.{ts,tsx}": [
       "prettier --write --ignore-unknown"
     ],
-    "package.json": "prettier-package-json --write"
+    "**/package.json": "prettier-package-json --write"
   },
   "prettier": "@template/prettier-config"
 }

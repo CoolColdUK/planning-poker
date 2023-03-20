@@ -87,13 +87,13 @@ To develop this progressive web app (PWA) for planning poker, you can follow the
 - Use Firestore's onSnapshot method to listen for changes in the votes collection.
 - Update the application state and display the voting results.
 
-12. Implement the VoteGraph.tsx component to visualize voting results as a graph.
+12. Implement the `VoteGraph.tsx` component to visualize voting results as a graph.
 
 13. Test the application thoroughly and fix any bugs or issues.
 
 14. Deploy the application to a hosting platform like Firebase Hosting or Netlify.
 
-15. Configure the PWA by adding a manifest.json file and a service worker for offline support and caching.
+15. Configure the PWA by adding a `manifest.json` file and a service worker for offline support and caching.
 
 Following these steps, you'll have a fully functional progressive web app for planning poker.
 ```
