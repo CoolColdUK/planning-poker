@@ -115,3 +115,61 @@ Effectively I have completed all steps including step 5. What is the code requir
 Function component is not a function declarationeslintreact/function-component-definition)
 
 maybe use `export default function` instead for the component?
+
+## Question 4
+
+I have modified your code to look like this
+```
+import {GoogleAuthProvider, onAuthStateChanged, signInWithPopup, User} from 'firebase/auth';
+import {useEffect, useState} from 'react';
+import {firebaseAuth} from '../firebaseConfig';
+
+export default function App() {
+  const [user, setUser] = useState<User | null>(null);
+
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(firebaseAuth, (returnedUser) => {
+      setUser(returnedUser);
+    });
+    return () => unsubscribe();
+  }, []);
+
+  const signInWithGoogle = async () => {
+    const provider = new GoogleAuthProvider();
+    try {
+      await signInWithPopup(firebaseAuth, provider);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const signOut = async () => {
+    try {
+      await signOut();
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  return (
+    <div className="App">
+      {user ? (
+        <>
+          <h1>Welcome, {user.displayName}</h1>
+          <button onClick={signOut}>Sign out</button>
+        </>
+      ) : (
+        <button onClick={signInWithGoogle}>Sign in with Google</button>
+      )}
+    </div>
+  );
+}
+
+```
+I have made the following changes
+- extract config to another file
+- use latest version of firebase@9, which uses functional components
+
+Can you modify the code to use mui components instead? do not use raw html element if possible
+Can you add theme and css baseline to the code
+can you center the content to the screen?

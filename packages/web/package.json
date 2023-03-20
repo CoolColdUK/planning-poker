@@ -1,22 +1,26 @@
 {
-  "name": "@planning-poker/web",
   "private": true,
+  "name": "@planning-poker/web",
   "version": "1.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite",
     "build": "tsc && vite build",
+    "dev": "vite",
     "lint": "eslint ./src/**/*.{ts,tsx}",
     "lint:fix": "eslint --fix ./src/**/*.{ts,tsx}",
     "preview": "vite preview"
   },
   "dependencies": {
-    "react": "^18.2.0",
-    "react-router-dom": "^6.9.0",
+    "@mui/material": "5.11.13",
+    "@mui/system": "5.11.13",
     "firebase": "9.18.0",
-    "react-dom": "^18.2.0"
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-router-dom": "^6.9.0"
   },
   "devDependencies": {
+    "@emotion/react": "11.10.6",
+    "@emotion/styled": "11.10.6",
     "@planning-poker/eslint-config": "^1.0.0",
     "@planning-poker/jest-config": "^1.0.0",
     "@planning-poker/ts-config": "^1.0.0",
@@ -24,9 +28,6 @@
     "@types/react-dom": "^18.0.11",
     "@vitejs/plugin-react": "^3.1.0",
     "typescript": "^4.9.3",
-    "@mui/material": "5.11.13",
-    "@emotion/react": "11.10.6",
-    "@emotion/styled": "11.10.6",
     "vite": "^4.2.1"
   },
   "eslintConfig": {
