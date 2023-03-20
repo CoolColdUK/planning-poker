@@ -1,5 +1,5 @@
 {
-  "name": "@template/prettier-config",
+  "name": "@planning-poker/prettier-config",
   "version": "1.0.0",
   "description": "Prettier config with packages",
   "license": "MIT",

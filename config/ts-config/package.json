@@ -1,5 +1,5 @@
 {
-  "name": "@template/ts-config",
+  "name": "@planning-poker/ts-config",
   "version": "1.0.0",
   "description": "Typescript config with packages",
   "license": "MIT",

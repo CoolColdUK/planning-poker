@@ -1,6 +1,6 @@
 {
   "private": true,
-  "name": "@template/functions",
+  "name": "@planning-poker/functions",
   "main": "dist/index.js",
   "scripts": {
     "build": "tsc",
