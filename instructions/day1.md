@@ -220,3 +220,14 @@ what should app.tsx look like now? also I have put all components in the `compon
 
 is the signOut function suppose to come from the 'firebase/auth' package? I got the following error
 Module '"../firebaseConfig"' has no exported member 'signOut'.ts(2305)
+
+## Question 11
+
+There are a few errors in Routes.tsx file
+- Cannot find module './firebaseConfig' or its corresponding type declarations.ts(2307)
+- Cannot find module './components/Login' or its corresponding type declarations.ts(2307)
+- Argument of type 'User | null' is not assignable to parameter of type 'SetStateAction<null>'.
+  Type 'User' is not assignable to type 'SetStateAction<null>'.
+    Type 'User' provides no match for the signature '(prevState: null): null'.ts(2345)
+
+maybe useState hook need to provide it with a type to initialise

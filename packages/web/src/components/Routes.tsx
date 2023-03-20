@@ -1,12 +1,12 @@
 import {useState, useEffect} from 'react';
 import {BrowserRouter as Router, Route, Routes as RR} from 'react-router-dom';
-import {onAuthStateChanged} from 'firebase/auth';
-import {firebaseAuth} from './firebaseConfig';
+import {onAuthStateChanged, User} from 'firebase/auth';
+import {firebaseAuth} from '../firebaseConfig'; // Adjust the import path if necessary
 import App from './App';
-import Login from './components/Login';
+import Login from './Login'; // Adjust the import path if necessary
 
 export default function Routes() {
-  const [user, setUser] = useState(null);
+  const [user, setUser] = useState<User | null>(null);
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(firebaseAuth, (returnedUser) => {
