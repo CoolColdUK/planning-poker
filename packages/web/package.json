@@ -11,16 +11,16 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@mui/material": "5.11.13",
-    "@mui/system": "5.11.13",
-    "firebase": "9.18.0",
+    "@mui/icons-material": "^5.11.11",
+    "@mui/material": "^5.11.13",
+    "firebase": "^9.18.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.9.0"
   },
   "devDependencies": {
-    "@emotion/react": "11.10.6",
-    "@emotion/styled": "11.10.6",
+    "@emotion/react": "^11.10.6",
+    "@emotion/styled": "^11.10.6",
     "@planning-poker/eslint-config": "^1.0.0",
     "@planning-poker/jest-config": "^1.0.0",
     "@planning-poker/ts-config": "^1.0.0",

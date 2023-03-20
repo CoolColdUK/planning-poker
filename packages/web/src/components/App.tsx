@@ -1,8 +1,8 @@
-import {Button, Container, CssBaseline, ThemeProvider, Typography} from '@mui/material';
-import {createTheme} from '@mui/system';
+import {Button, Container, CssBaseline, ThemeProvider, Typography, createTheme} from '@mui/material';
 import {GoogleAuthProvider, onAuthStateChanged, signInWithPopup, signOut as firebaseSignOut, User} from 'firebase/auth';
 import {useEffect, useState} from 'react';
 import {firebaseAuth} from '../firebaseConfig';
+import Login from './Login';
 
 const theme = createTheme();
 
@@ -56,9 +56,7 @@ export default function App() {
             </Button>
           </>
         ) : (
-          <Button variant="contained" color="primary" onClick={signInWithGoogle}>
-            Sign in with Google
-          </Button>
+          <Login onUserChanged={setUser} />
         )}
       </Container>
     </ThemeProvider>
