@@ -1,6 +1,6 @@
 import {Button, Container, Typography} from '@mui/material';
-import {User} from 'firebase/auth';
-import {signOut} from '../firebaseConfig';
+import {signOut as firebaseSignOut, User} from 'firebase/auth';
+import {firebaseAuth} from '../firebaseConfig';
 
 interface AppProps {
   user: User | null;
@@ -9,7 +9,7 @@ interface AppProps {
 export default function App({user}: AppProps) {
   const handleSignOut = async () => {
     try {
-      await signOut();
+      await firebaseSignOut(firebaseAuth);
     } catch (error) {
       console.error(error);
     }

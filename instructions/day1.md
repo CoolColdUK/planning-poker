@@ -206,13 +206,17 @@ maybe extract the container to the Login.tsx as well
 ## Question 7
 
 Type '{ path: string; component: any; }' is not assignable to type 'IntrinsicAttributes & RouteProps'.
-  Property 'component' does not exist on type 'IntrinsicAttributes & RouteProps'. Did you mean 'Component'?ts(2322)
+Property 'component' does not exist on type 'IntrinsicAttributes & RouteProps'. Did you mean 'Component'?ts(2322)
 
-  ## Question 8
+## Question 8
 
-  Property 'onUserChanged' is missing in type '{}' but required in type 'LoginProps'.ts(2741)
+Property 'onUserChanged' is missing in type '{}' but required in type 'LoginProps'.ts(2741)
 
-  ## Question 9
+## Question 9
 
-  what should app.tsx look like now? also I have put all components in the `components` folder
-  
+what should app.tsx look like now? also I have put all components in the `components` folder
+
+## Question 10
+
+is the signOut function suppose to come from the 'firebase/auth' package? I got the following error
+Module '"../firebaseConfig"' has no exported member 'signOut'.ts(2305)
