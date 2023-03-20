@@ -97,3 +97,16 @@ To develop this progressive web app (PWA) for planning poker, you can follow the
 
 Following these steps, you'll have a fully functional progressive web app for planning poker.
 ```
+
+## Question 2
+
+I have done the following
+
+- setup firebase with firestore in native mode, authentication with firebase, hosting with firebase
+- use mono repo structure
+- ci/cd with firebase init
+- vite server can now start
+- installed react and react-dom
+
+Effectively I have completed all steps including step 5. What is the code required for step 6 App.tsx?
+
