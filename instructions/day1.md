@@ -202,3 +202,9 @@ import {Button, Container, CssBaseline, ThemeProvider, Typography,createTheme} f
 
 the latest version of react does not require import React from 'react'
 maybe extract the container to the Login.tsx as well
+
+## Question 7
+
+Type '{ path: string; component: any; }' is not assignable to type 'IntrinsicAttributes & RouteProps'.
+  Property 'component' does not exist on type 'IntrinsicAttributes & RouteProps'. Did you mean 'Component'?ts(2322)
+  
