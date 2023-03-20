@@ -207,4 +207,8 @@ maybe extract the container to the Login.tsx as well
 
 Type '{ path: string; component: any; }' is not assignable to type 'IntrinsicAttributes & RouteProps'.
   Property 'component' does not exist on type 'IntrinsicAttributes & RouteProps'. Did you mean 'Component'?ts(2322)
+
+  ## Question 8
+
+  Property 'onUserChanged' is missing in type '{}' but required in type 'LoginProps'.ts(2741)
   
