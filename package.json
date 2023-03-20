@@ -1,0 +1,41 @@
+{
+  "name": "template-firebase-monorepo",
+  "version": "1.0.0",
+  "description": "",
+  "license": "ISC",
+  "author": "",
+  "homepage": "https://github.com/CoolColdUK/template-firebase-monorepo#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/CoolColdUK/template-firebase-monorepo.git"
+  },
+  "bugs": {
+    "url": "https://github.com/CoolColdUK/template-firebase-monorepo/issues"
+  },
+  "main": "index.js",
+  "scripts": {
+    "fn:serve": "lerna exec --scope=@template/functions -- npm run serve",
+    "fn:watch": "lerna exec --scope=@template/functions -- npm run watch",
+    "format": "prettier --ignore-unknown --write ./packages/**/*.{ts,tsx}",
+    "postinstall": "lerna bootstrap --force-local --hoist --concurrency=1",
+    "prepare": "husky install",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "workspaces": [
+    "packages/*",
+    "config/*"
+  ],
+  "dependencies": {
+    "@template/prettier-config": "^1.0.0",
+    "firebase-tools": "^11.24.1",
+    "lerna": "^6.5.1",
+    "nodemon": "^2.0.21"
+  },
+  "lint-staged": {
+    "*.{ts,tsx}": [
+      "prettier --write --ignore-unknown"
+    ],
+    "package.json": "prettier-package-json --write"
+  },
+  "prettier": "@template/prettier-config"
+}

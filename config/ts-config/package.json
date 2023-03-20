@@ -1,0 +1,20 @@
+{
+  "name": "@template/ts-config",
+  "version": "1.0.0",
+  "description": "Typescript config with packages",
+  "license": "MIT",
+  "author": "CoolColdUK@github",
+  "main": "tsconfig.json",
+  "files": [
+    "tsconfig.json"
+  ],
+  "scripts": {
+    "lint": "exit 0",
+    "pack": "npm pack --pack-destination=../../packages/functions/src/packages"
+  },
+  "dependencies": {
+    "@types/node": "^18.15.3",
+    "ts-node": "^10.9.1",
+    "typescript": "^5.0.2"
+  }
+}
