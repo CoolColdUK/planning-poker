@@ -1,3 +1,6 @@
 {
+  "eslint.workingDirectories": ["packages/web","packages/functions"],
+  "eslint.codeActionsOnSave.mode": "problems",
+  "eslint.packageManager": "npm",
   "eslint.enable": true
 }
