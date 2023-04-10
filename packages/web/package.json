@@ -11,12 +11,12 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@mui/icons-material": "^5.11.11",
-    "@mui/material": "^5.11.13",
-    "firebase": "^9.18.0",
+    "@mui/icons-material": "^5.11.16",
+    "@mui/material": "^5.11.16",
+    "firebase": "^9.19.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "react-router-dom": "^6.9.0"
+    "react-router-dom": "^6.10.0"
   },
   "devDependencies": {
     "@emotion/react": "^11.10.6",
@@ -24,10 +24,10 @@
     "@planning-poker/eslint-config": "^1.0.0",
     "@planning-poker/jest-config": "^1.0.0",
     "@planning-poker/ts-config": "^1.0.0",
-    "@types/react": "^18.0.28",
+    "@types/react": "^18.0.34",
     "@types/react-dom": "^18.0.11",
     "@vitejs/plugin-react": "^3.1.0",
-    "typescript": "^4.9.3",
+    "typescript": "^5.0.4",
     "vite": "^4.2.1"
   },
   "eslintConfig": {
