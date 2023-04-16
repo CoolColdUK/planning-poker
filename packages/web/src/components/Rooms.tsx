@@ -1,6 +1,6 @@
 import {Button, Container, List, ListItem, ListItemText, Typography} from '@mui/material';
 import {User} from 'firebase/auth';
-import {arrayRemove, arrayUnion, doc, onSnapshot, update, updateDoc} from 'firebase/firestore';
+import {arrayRemove, arrayUnion, doc, onSnapshot, updateDoc} from 'firebase/firestore';
 import {useEffect, useState} from 'react';
 import {useParams} from 'react-router-dom';
 import {firestore} from '../firebaseConfig'; // Adjust the import path if necessary
@@ -48,16 +48,18 @@ export default function Room(props: RoomProps) {
     const roomRef = doc(firestore, 'rooms', id);
 
     try {
-      // Remove all users from the room
-      const removeUsersPromises = room.users.map((user) => update(roomRef, {users: arrayRemove(user)}));
-      await Promise.all(removeUsersPromises);
+      if (room && room.users) {
+        // Remove all users from the room
+        const removeUsersPromises = room.users.map((user) => updateDoc(roomRef, {users: arrayRemove(user)}));
+        await Promise.all(removeUsersPromises);
 
-      // Add users back with the vote property removed
-      const addUsersPromises = room.users.map((user) => {
-        const {vote, ...userWithoutVote} = user;
-        return update(roomRef, {users: arrayUnion(userWithoutVote)});
-      });
-      await Promise.all(addUsersPromises);
+        // Add users back with the vote property removed
+        const addUsersPromises = room.users.map((user) => {
+          const {vote, ...userWithoutVote} = user;
+          return updateDoc(roomRef, {users: arrayUnion(userWithoutVote)});
+        });
+        await Promise.all(addUsersPromises);
+      }
     } catch (error) {
       console.error('Error resetting votes: ', error);
     }

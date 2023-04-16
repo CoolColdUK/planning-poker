@@ -236,3 +236,9 @@ create a bar menu at the top to access various links
 
 add reset button to reset all vote in room
 
+## Question 10
+
+got these two errors
+- 'room.users.map' is possibly 'undefined'.ts(18048)
+- Module '"firebase/firestore"' has no exported member 'update'.
+
