@@ -424,3 +424,7 @@ why change rechart to react-chartjs-2? only use one chart package please
 ## Question 27
 
 it is showing the vote again. Votes should only be shown when everyone has voted
+
+## Question 28
+
+add a text field in the navbar to go to specific room

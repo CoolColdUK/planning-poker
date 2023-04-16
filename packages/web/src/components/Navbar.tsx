@@ -1,14 +1,27 @@
 // Navbar.tsx
-import {AppBar, Button, Toolbar, Typography} from '@mui/material';
+import {AppBar, Button, TextField, Toolbar, Typography} from '@mui/material';
 import {Box} from '@mui/system';
 import {User} from 'firebase/auth';
-import {Link} from 'react-router-dom';
+import {useState} from 'react';
+import {Link, useNavigate} from 'react-router-dom';
 
 interface NavbarProps {
   user: User | null;
 }
 
 export default function Navbar({user}: NavbarProps) {
+  const [roomId, setRoomId] = useState('');
+  const navigate = useNavigate();
+
+  const handleRoomIdChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setRoomId(event.target.value);
+  };
+
+  const handleJoinRoom = () => {
+    if (roomId) {
+      navigate(`/rooms/${roomId}`);
+    }
+  };
   return (
     <AppBar position="static">
       <Toolbar>
@@ -18,6 +31,17 @@ export default function Navbar({user}: NavbarProps) {
         <Box sx={{display: 'flex', alignItems: 'center'}}>
           {user ? (
             <>
+              <TextField
+                value={roomId}
+                onChange={handleRoomIdChange}
+                label="Room ID"
+                variant="outlined"
+                size="small"
+                style={{marginRight: '1rem'}}
+              />
+              <Button onClick={handleJoinRoom} variant="contained" color="primary">
+                Join Room
+              </Button>
               <Button component={Link} to="/" color="inherit">
                 Home
               </Button>
