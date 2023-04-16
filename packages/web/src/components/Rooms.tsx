@@ -31,9 +31,12 @@ export default function Room(props: RoomProps) {
   const handleVote = async (vote: string) => {
     if (!id) return;
     const roomRef = doc(firestore, 'rooms', id);
+    const {uid, displayName, photoURL} = props.user;
+    const userObject = {uid, displayName, photoURL, vote};
+
     try {
       await updateDoc(roomRef, {
-        [`users.${props.user.uid}`]: {...props.user, vote},
+        [`users.${props.user.uid}`]: userObject,
       });
     } catch (error) {
       console.error('Error updating vote: ', error);

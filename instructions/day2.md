@@ -222,4 +222,8 @@ also create a new VoteUser interface in separate file
 ## Question 6
 
 rebaseError: Function arrayUnion() called with invalid data. Unsupported field value: a custom ProactiveRefresh object (
-  
+
+## Question 7
+
+ror updating vote:  FirebaseError: Function updateDoc() called with invalid data. Unsupported field value: a custom ProactiveRefresh object (found in field users.LiywZ7OuhPWFs7H9mFif8DqNHZl1.proactiveRefresh in document rooms/kX4cPZzzFMAd8xhOhH2L)
+o
