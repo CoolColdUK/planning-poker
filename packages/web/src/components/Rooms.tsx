@@ -2,7 +2,7 @@ import {Button, Container, List, ListItem, ListItemText, Typography} from '@mui/
 import {User} from 'firebase/auth';
 import {Cell, Pie, PieChart, ResponsiveContainer} from 'recharts';
 
-import {doc, onSnapshot, updateDoc} from 'firebase/firestore';
+import {doc, getDoc, onSnapshot, serverTimestamp, setDoc, updateDoc} from 'firebase/firestore';
 import {useEffect, useState} from 'react';
 import {useParams} from 'react-router-dom';
 import {firestore} from '../firebaseConfig'; // Adjust the import path if necessary
@@ -33,6 +33,39 @@ export default function Room(props: RoomProps) {
 
     return () => unsubscribe();
   }, [id]);
+
+  useEffect(() => {
+    if (!id) return;
+
+    const roomRef = doc(firestore, 'rooms', id);
+
+    const checkAndCreateRoom = async () => {
+      const roomSnapshot = await getDoc(roomRef);
+
+      if (!roomSnapshot.exists()) {
+        const newRoom = {
+          createdAt: serverTimestamp(),
+          createdBy: props.user.uid,
+          users: {
+            [props.user.uid]: mapUserToVoteUser(props.user, VoteEnum.NOT_VOTED),
+          },
+        };
+        await setDoc(roomRef, newRoom);
+      }
+    };
+
+    checkAndCreateRoom();
+
+    const unsubscribe = onSnapshot(roomRef, (snapshot) => {
+      if (snapshot.exists()) {
+        setRoom(snapshot.data() as RoomData);
+      } else {
+        console.error('Room not found');
+      }
+    });
+
+    return () => unsubscribe();
+  }, [id, props.user]);
 
   const handleVote = async (vote: VoteEnum) => {
     if (!id) return;

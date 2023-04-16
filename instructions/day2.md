@@ -298,3 +298,7 @@ export enum VoteEnum {
 }
 ```
 PLease update to use that instead in the various functions. Also use not vote for default vote
+
+## Question 19
+
+modify room such that if a room does not exists, it will create it on the fly
