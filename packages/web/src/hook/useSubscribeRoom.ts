@@ -8,7 +8,7 @@ import {VoteEnum} from '../enum/VoteEnum';
 import mapUserToVoteUser from '../helper/mapUserToVoteUser';
 import {RoomData} from '../interface/RoomData';
 
-export const useSubscribeRoom = (roomId: string | undefined, user: User) => {
+export const useSubscribeRoom = (roomId: string, user: User) => {
   const [room, setRoom] = useState<RoomData | null>(null);
   const roomRef = useRef(doc(firestore, 'rooms', roomId));
 
