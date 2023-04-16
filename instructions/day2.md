@@ -219,3 +219,7 @@ modify it to use map data structure instead of array in the room interface
 
 also create a new VoteUser interface in separate file
 
+## Question 6
+
+rebaseError: Function arrayUnion() called with invalid data. Unsupported field value: a custom ProactiveRefresh object (
+  

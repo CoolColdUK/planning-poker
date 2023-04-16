@@ -1,6 +1,6 @@
 import {Button, Container, List, ListItem, ListItemText, Typography} from '@mui/material';
 import {User} from 'firebase/auth';
-import {arrayUnion, doc, onSnapshot, updateDoc} from 'firebase/firestore';
+import {doc, onSnapshot, updateDoc} from 'firebase/firestore';
 import {useEffect, useState} from 'react';
 import {useParams} from 'react-router-dom';
 import {firestore} from '../firebaseConfig'; // Adjust the import path if necessary
@@ -33,7 +33,7 @@ export default function Room(props: RoomProps) {
     const roomRef = doc(firestore, 'rooms', id);
     try {
       await updateDoc(roomRef, {
-        users: arrayUnion({...props.user, vote}), // Assumes you have access to the current user object
+        [`users.${props.user.uid}`]: {...props.user, vote},
       });
     } catch (error) {
       console.error('Error updating vote: ', error);
