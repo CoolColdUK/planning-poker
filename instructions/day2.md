@@ -67,3 +67,7 @@ there are a few errors in createRoom component
 - query and where is not used in import of firebase/firestore
 
 please update the createRoom component
+
+## Question 4
+
+give me the code for rooms
