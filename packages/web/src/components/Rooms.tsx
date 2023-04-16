@@ -1,6 +1,6 @@
 import {Button, Container, List, ListItem, ListItemText, Typography} from '@mui/material';
 import {User} from 'firebase/auth';
-import {arrayRemove, arrayUnion, doc, onSnapshot, updateDoc} from 'firebase/firestore';
+import {doc, onSnapshot, updateDoc} from 'firebase/firestore';
 import {useEffect, useState} from 'react';
 import {useParams} from 'react-router-dom';
 import {firestore} from '../firebaseConfig'; // Adjust the import path if necessary
@@ -49,16 +49,16 @@ export default function Room(props: RoomProps) {
 
     try {
       if (room.users) {
-        // Remove all users from the room
-        const removeUsersPromises = room.users.map((user) => updateDoc(roomRef, {users: arrayRemove(user)}));
-        await Promise.all(removeUsersPromises);
+        // Create a new users object with the vote property removed
+        const updatedUsers = Object.fromEntries(
+          Object.entries(room.users).map(([uid, user]) => {
+            const {vote, ...userWithoutVote} = user;
+            return [uid, userWithoutVote];
+          }),
+        );
 
-        // Add users back with the vote property removed
-        const addUsersPromises = room.users.map((user) => {
-          const {vote, ...userWithoutVote} = user;
-          return updateDoc(roomRef, {users: arrayUnion(userWithoutVote)});
-        });
-        await Promise.all(addUsersPromises);
+        // Update the users object in the Firestore document
+        await updateDoc(roomRef, {users: updatedUsers});
       }
     } catch (error) {
       console.error('Error resetting votes: ', error);
@@ -77,13 +77,15 @@ export default function Room(props: RoomProps) {
       <Typography variant="h6" gutterBottom>
         Users
       </Typography>
-      <List>
-        {Object.values(room.users).map((user) => (
-          <ListItem key={user.uid}>
-            <ListItemText primary={user.displayName} secondary={user.vote ? `Voted: ${user.vote}` : 'Not voted'} />
-          </ListItem>
-        ))}
-      </List>
+      {room && room.users && (
+        <List>
+          {Object.entries(room.users).map(([uid, user]) => (
+            <ListItem key={uid}>
+              <ListItemText primary={user.displayName} secondary={user.vote ? `Voted: ${user.vote}` : 'Not voted'} />
+            </ListItem>
+          ))}
+        </List>
+      )}
       <Typography variant="h6" gutterBottom>
         Vote
       </Typography>

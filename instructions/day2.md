@@ -245,3 +245,8 @@ got these two errors
 ## Question 11
 
 where does `room` variable comes from?
+
+## Question 12
+
+'room.users.map' is possibly 'undefined'
+please note users is an object
