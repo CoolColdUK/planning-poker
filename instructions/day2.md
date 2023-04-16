@@ -255,3 +255,13 @@ please note users is an object
 
 add a summary in pie chart in room page to summarise number of votes and number not voted
 also allow a skip vote in case someone doesn't want to vote
+
+## Question 14
+
+Error updating vote:  FirebaseError: Function updateDoc() called with invalid data. Unsupported field value: a custom ProactiveRefresh object (found in field users.LiywZ7OuhPWFs7H9mFif8DqNHZl1.proactiveRefresh in document rooms/YsaBEUrpFgLw46KNVUSl)
+
+this line: summary[user.vote]++;
+give error: Element implicitly has an 'any' type because expression of type 'string' can't be used to index type '{ XS: number; S: number; M: number; L: number; XL: number; notVoted: number; skipped: number; }'.
+  No index signature with a parameter of type 'string' was found on type '{ XS: number; S: number; M: number; L: number; XL: number; notVoted: number; skipped: number; }'
+
+also can we use skip string as vote instead of null, otherwise it will appear as Not Voted

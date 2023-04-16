@@ -32,13 +32,14 @@ export default function Room(props: RoomProps) {
     return () => unsubscribe();
   }, [id]);
 
-  const handleVote = async (vote: string | null) => {
+  const handleVote = async (vote: string | 'skip') => {
     if (!id) return;
     const roomRef = doc(firestore, 'rooms', id);
+    const {proactiveRefresh, ...currentUser} = props.user; // Remove the proactiveRefresh property
     try {
       await updateDoc(roomRef, {
         [`users.${props.user.uid}`]: {
-          ...props.user,
+          ...currentUser,
           vote,
         },
       });
@@ -84,7 +85,7 @@ export default function Room(props: RoomProps) {
 
     Object.values(room.users).forEach((user) => {
       if (user.vote) {
-        summary[user.vote]++;
+        summary[user.vote as keyof typeof summary]++;
       } else if (user.vote === null) {
         summary.skipped++;
       } else {
@@ -127,7 +128,7 @@ export default function Room(props: RoomProps) {
       <Button onClick={() => handleVote('M')}>M</Button>
       <Button onClick={() => handleVote('L')}>L</Button>
       <Button onClick={() => handleVote('XL')}>XL</Button>
-      <Button onClick={() => handleVote(null)}>Skip</Button>
+      <Button onClick={() => handleVote('skip')}>Skip</Button>
       <Button onClick={handleResetVotes} style={{marginLeft: '1rem'}}>
         Reset Votes
       </Button>{' '}
