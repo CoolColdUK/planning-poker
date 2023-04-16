@@ -1,5 +1,6 @@
+import {User} from 'firebase/auth';
+import {addDoc, collection, serverTimestamp} from 'firebase/firestore';
 import {useEffect} from 'react';
-import {collection, addDoc, Timestamp, serverTimestamp} from 'firebase/firestore';
 import {useNavigate} from 'react-router-dom';
 import {firestore} from '../firebaseConfig'; // Adjust the import path if necessary
 

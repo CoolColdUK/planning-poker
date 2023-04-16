@@ -20,7 +20,7 @@ export default function Routes() {
     <Router>
       <RR>
         <Route path="/login" element={<Login onUserChanged={setUser} />} />
-        <Route path="/create-room" element={user ? <CreateRoom /> : <Login onUserChanged={setUser} />} />
+        <Route path="/create-room" element={user ? <CreateRoom user={user} /> : <Login onUserChanged={setUser} />} />
         {/* Add other routes, like the Room component, as needed */}
         <Route path="/" element={user ? <App user={user} /> : <Login onUserChanged={setUser} />} />{' '}
       </RR>

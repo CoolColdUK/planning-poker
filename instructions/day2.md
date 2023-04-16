@@ -26,3 +26,44 @@ Remember to consider best practices for state management, prop drilling, and rea
 
 give me the code for create room component. I want the room creation to be automatic so some logged in user visiting a link will automatically create the room. The user will also be able to see other users within the room. 
 
+## Question 3
+
+this is the code for routers with the correct folder structure
+```
+import {useState, useEffect} from 'react';
+import {BrowserRouter as Router, Route, Routes as RR} from 'react-router-dom';
+import {onAuthStateChanged, User} from 'firebase/auth';
+import {firebaseAuth} from '../firebaseConfig'; // Adjust the import path if necessary
+import App from './App';
+import Login from './Login'; // Adjust the import path if necessary
+import CreateRoom from './CreateRoom';
+
+export default function Routes() {
+  const [user, setUser] = useState<User | null>(null);
+
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(firebaseAuth, (returnedUser) => {
+      setUser(returnedUser);
+    });
+    return () => unsubscribe();
+  }, []);
+
+  return (
+    <Router>
+      <RR>
+        <Route path="/login" element={<Login onUserChanged={setUser} />} />
+        <Route path="/create-room" element={user ? <CreateRoom /> : <Login onUserChanged={setUser} />} />
+        {/* Add other routes, like the Room component, as needed */}
+        <Route path="/" element={user ? <App user={user} /> : <Login onUserChanged={setUser} />} />{' '}
+      </RR>
+    </Router>
+  );
+}
+```
+
+there are a few errors in createRoom component
+- useHistory is no longer exported, new function is useNavigate
+- there is no firestore in firebaseConfig file
+- query and where is not used in import of firebase/firestore
+
+please update the createRoom component
