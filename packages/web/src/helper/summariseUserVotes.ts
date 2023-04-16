@@ -20,3 +20,5 @@ export function summariseUserVotes(room: RoomData) {
 
   return summary;
 }
+
+export type VoteSummary = ReturnType<typeof summariseUserVotes>;

@@ -416,3 +416,7 @@ hide the user's vote until all users have voted
 - create a util function called hasAllUserVoted, taking RoomData as parameter and identify if all users have voted
 - create a util function called summariseUserVote, replacing and refactored version of`calculateVoteSummary`
 - create separate component for pie chart
+
+## Question 26
+
+why change rechart to react-chartjs-2? only use one chart package please

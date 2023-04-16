@@ -9,6 +9,7 @@ import {hasAllUsersVoted} from '../helper/hasAllUsersVoted';
 import mapUserToVoteUser from '../helper/mapUserToVoteUser';
 import {useSubscribeRoom} from '../hook/useSubscribeRoom';
 import VoteSummaryPieChart from './VoteSummaryPieChart';
+import {summariseUserVotes} from '../helper/summariseUserVotes';
 
 // const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042', '#9966FF', '#FF9999', '#33CCCC'];
 
@@ -103,7 +104,7 @@ export default function Room(props: RoomProps) {
       <Typography variant="h6" gutterBottom>
         Vote Summary
       </Typography>
-      <VoteSummaryPieChart room={room} />
+      <VoteSummaryPieChart summary={summariseUserVotes(room)} />
     </Container>
   );
 }

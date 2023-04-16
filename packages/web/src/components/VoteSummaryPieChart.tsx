@@ -1,25 +1,28 @@
-// VoteSummaryPieChart.tsx
-import {Pie} from 'react-chartjs-2';
-import {RoomData} from '../interface/RoomData';
-import {summariseUserVotes} from '../utils/utils';
+// PieChartComponent.tsx
+import {PieChart, Pie, Cell, Tooltip, Legend} from 'recharts';
+import {VoteSummary} from '../helper/summariseUserVotes';
 
-interface VoteSummaryPieChartProps {
-  room: RoomData;
+interface PieChartComponentProps {
+  summary: VoteSummary;
 }
 
-const VoteSummaryPieChart: React.FC<VoteSummaryPieChartProps> = ({room}) => {
-  const summary = summariseUserVotes(room);
-  const data = {
-    labels: Object.keys(summary),
-    datasets: [
-      {
-        data: Object.values(summary),
-        backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', '#9966FF', '#FF9F40'],
-      },
-    ],
-  };
+const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042', '#ff0000', '#a4a4a4', '#0000ff'];
 
-  return <Pie data={data} />;
-};
+export default function PieChartComponent({summary}: PieChartComponentProps) {
+  const data = Object.entries(summary).map(([key, value]) => ({
+    name: key,
+    value,
+  }));
 
-export default VoteSummaryPieChart;
+  return (
+    <PieChart width={400} height={400}>
+      <Pie data={data} cx={200} cy={200} labelLine={false} outerRadius={80} fill="#8884d8" dataKey="value">
+        {data.map((_entry, index) => (
+          <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+        ))}
+      </Pie>
+      <Tooltip />
+      <Legend />
+    </PieChart>
+  );
+}
