@@ -250,3 +250,8 @@ where does `room` variable comes from?
 
 'room.users.map' is possibly 'undefined'
 please note users is an object
+
+## Question 13
+
+add a summary in pie chart in room page to summarise number of votes and number not voted
+also allow a skip vote in case someone doesn't want to vote

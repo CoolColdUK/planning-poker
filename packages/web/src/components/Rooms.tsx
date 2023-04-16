@@ -1,10 +1,14 @@
 import {Button, Container, List, ListItem, ListItemText, Typography} from '@mui/material';
 import {User} from 'firebase/auth';
+import {PieChart, Pie, Cell, ResponsiveContainer} from 'recharts';
+
 import {doc, onSnapshot, updateDoc} from 'firebase/firestore';
 import {useEffect, useState} from 'react';
 import {useParams} from 'react-router-dom';
 import {firestore} from '../firebaseConfig'; // Adjust the import path if necessary
 import {RoomData} from '../interface/RoomData';
+
+const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042', '#9966FF', '#FF9999', '#33CCCC'];
 
 export interface RoomProps {
   user: User;
@@ -28,15 +32,15 @@ export default function Room(props: RoomProps) {
     return () => unsubscribe();
   }, [id]);
 
-  const handleVote = async (vote: string) => {
+  const handleVote = async (vote: string | null) => {
     if (!id) return;
     const roomRef = doc(firestore, 'rooms', id);
-    const {uid, displayName, photoURL} = props.user;
-    const userObject = {uid, displayName, photoURL, vote};
-
     try {
       await updateDoc(roomRef, {
-        [`users.${props.user.uid}`]: userObject,
+        [`users.${props.user.uid}`]: {
+          ...props.user,
+          vote,
+        },
       });
     } catch (error) {
       console.error('Error updating vote: ', error);
@@ -63,6 +67,35 @@ export default function Room(props: RoomProps) {
     } catch (error) {
       console.error('Error resetting votes: ', error);
     }
+  };
+
+  const calculateVoteSummary = () => {
+    if (!room || !room.users) return [];
+
+    const summary = {
+      XS: 0,
+      S: 0,
+      M: 0,
+      L: 0,
+      XL: 0,
+      notVoted: 0,
+      skipped: 0,
+    };
+
+    Object.values(room.users).forEach((user) => {
+      if (user.vote) {
+        summary[user.vote]++;
+      } else if (user.vote === null) {
+        summary.skipped++;
+      } else {
+        summary.notVoted++;
+      }
+    });
+
+    return Object.entries(summary).map(([key, value]) => ({
+      name: key,
+      value,
+    }));
   };
 
   if (!room) {
@@ -94,9 +127,27 @@ export default function Room(props: RoomProps) {
       <Button onClick={() => handleVote('M')}>M</Button>
       <Button onClick={() => handleVote('L')}>L</Button>
       <Button onClick={() => handleVote('XL')}>XL</Button>
+      <Button onClick={() => handleVote(null)}>Skip</Button>
       <Button onClick={handleResetVotes} style={{marginLeft: '1rem'}}>
         Reset Votes
       </Button>{' '}
+      <ResponsiveContainer width="100%" height={400}>
+        <PieChart>
+          <Pie
+            data={calculateVoteSummary()}
+            dataKey="value"
+            nameKey="name"
+            cx="50%"
+            cy="50%"
+            outerRadius={150}
+            fill="#8884d8"
+          >
+            {calculateVoteSummary().map((entry, index) => (
+              <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+            ))}
+          </Pie>
+        </PieChart>
+      </ResponsiveContainer>
     </Container>
   );
 }
