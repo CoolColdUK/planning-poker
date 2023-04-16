@@ -17,13 +17,13 @@ export default function CreateRoom({user}: CreateRoomProps) {
       const room = {
         createdAt: serverTimestamp(),
         createdBy: user.uid,
-        users: [
-          {
+        users: {
+          [user.uid]: {
             uid: user.uid,
             displayName: user.displayName,
             photoURL: user.photoURL,
           },
-        ],
+        },
       };
 
       try {
