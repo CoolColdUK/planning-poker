@@ -408,3 +408,11 @@ are there any missing functionality from the original plan?
 ## Question 24
 
 hide the user's vote until all users have voted
+
+## Question 25
+
+- skipped should be considered as voted
+- create a util function called isUserVoted, taking VoteUser as parameter
+- create a util function called hasAllUserVoted, taking RoomData as parameter and identify if all users have voted
+- create a util function called summariseUserVote, replacing and refactored version of`calculateVoteSummary`
+- create separate component for pie chart

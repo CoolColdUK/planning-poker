@@ -1,16 +1,16 @@
 import {Button, Container, List, ListItem, ListItemText, Typography} from '@mui/material';
 import {User} from 'firebase/auth';
-import {Cell, Pie, PieChart, ResponsiveContainer} from 'recharts';
 import {doc, updateDoc} from 'firebase/firestore';
 import {useParams} from 'react-router-dom';
 import {v4 as uuidv4} from 'uuid';
 import {VoteEnum} from '../enum/VoteEnum';
 import {firestore} from '../firebaseConfig'; // Adjust the import path if necessary
+import {hasAllUsersVoted} from '../helper/hasAllUsersVoted';
 import mapUserToVoteUser from '../helper/mapUserToVoteUser';
 import {useSubscribeRoom} from '../hook/useSubscribeRoom';
-import {VoteUser} from '../interface/VoteUser';
+import VoteSummaryPieChart from './VoteSummaryPieChart';
 
-const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042', '#9966FF', '#FF9999', '#33CCCC'];
+// const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042', '#9966FF', '#FF9999', '#33CCCC'];
 
 export interface RoomProps {
   user: User;
@@ -21,14 +21,6 @@ export default function Room(props: RoomProps) {
 
   const roomId = id || uuidv4().slice(0, 4);
   const room = useSubscribeRoom(roomId, props.user);
-
-  const allUsersVoted = () => {
-    if (!room) return false;
-
-    return Object.values(room.users).every(
-      (user: VoteUser) => user.vote !== VoteEnum.NOT_VOTED && user.vote !== VoteEnum.SKIP,
-    );
-  };
 
   const handleVote = async (vote: VoteEnum) => {
     if (!id) return;
@@ -66,35 +58,6 @@ export default function Room(props: RoomProps) {
     }
   };
 
-  const calculateVoteSummary = () => {
-    if (!room || !room.users) return [];
-
-    const summary = {
-      XS: 0,
-      S: 0,
-      M: 0,
-      L: 0,
-      XL: 0,
-      notVoted: 0,
-      skipped: 0,
-    };
-
-    Object.values(room.users).forEach((user) => {
-      if (user.vote) {
-        summary[user.vote as keyof typeof summary]++;
-      } else if (user.vote === null) {
-        summary.skipped++;
-      } else {
-        summary.notVoted++;
-      }
-    });
-
-    return Object.entries(summary).map(([key, value]) => ({
-      name: key,
-      value,
-    }));
-  };
-
   if (!room) {
     return <h1>Loading...</h1>;
   }
@@ -114,13 +77,11 @@ export default function Room(props: RoomProps) {
               <ListItemText
                 primary={user.displayName}
                 secondary={
-                  allUsersVoted()
+                  hasAllUsersVoted(room)
                     ? user.vote === VoteEnum.SKIP
                       ? 'Skipped'
                       : `Voted: ${user.vote}`
-                    : user.vote === VoteEnum.NOT_VOTED || user.vote === VoteEnum.SKIP
-                    ? 'Not voted'
-                    : 'Voted'
+                    : 'Not voted'
                 }
               />
             </ListItem>
@@ -139,25 +100,10 @@ export default function Room(props: RoomProps) {
       <Button onClick={handleResetVotes} style={{marginLeft: '1rem'}}>
         Reset Votes
       </Button>{' '}
-      <ResponsiveContainer width="100%" height={400}>
-        <PieChart>
-          <Pie
-            data={calculateVoteSummary()}
-            dataKey="value"
-            nameKey="name"
-            cx="50%"
-            cy="50%"
-            labelLine={false}
-            label={({name, percent}) => `${name}: ${(percent * 100).toFixed(0)}%`} // Add this line
-            outerRadius={150}
-            fill="#8884d8"
-          >
-            {calculateVoteSummary().map((_entry, index) => (
-              <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
-            ))}
-          </Pie>
-        </PieChart>
-      </ResponsiveContainer>
+      <Typography variant="h6" gutterBottom>
+        Vote Summary
+      </Typography>
+      <VoteSummaryPieChart room={room} />
     </Container>
   );
 }
