@@ -232,3 +232,7 @@ o
 
 create a bar menu at the top to access various links
 
+## Question 9
+
+add reset button to reset all vote in room
+

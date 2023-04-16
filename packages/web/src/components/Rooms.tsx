@@ -1,6 +1,6 @@
 import {Button, Container, List, ListItem, ListItemText, Typography} from '@mui/material';
 import {User} from 'firebase/auth';
-import {doc, onSnapshot, updateDoc} from 'firebase/firestore';
+import {arrayRemove, arrayUnion, doc, onSnapshot, update, updateDoc} from 'firebase/firestore';
 import {useEffect, useState} from 'react';
 import {useParams} from 'react-router-dom';
 import {firestore} from '../firebaseConfig'; // Adjust the import path if necessary
@@ -43,6 +43,26 @@ export default function Room(props: RoomProps) {
     }
   };
 
+  const handleResetVotes = async () => {
+    if (!id) return;
+    const roomRef = doc(firestore, 'rooms', id);
+
+    try {
+      // Remove all users from the room
+      const removeUsersPromises = room.users.map((user) => update(roomRef, {users: arrayRemove(user)}));
+      await Promise.all(removeUsersPromises);
+
+      // Add users back with the vote property removed
+      const addUsersPromises = room.users.map((user) => {
+        const {vote, ...userWithoutVote} = user;
+        return update(roomRef, {users: arrayUnion(userWithoutVote)});
+      });
+      await Promise.all(addUsersPromises);
+    } catch (error) {
+      console.error('Error resetting votes: ', error);
+    }
+  };
+
   if (!room) {
     return <h1>Loading...</h1>;
   }
@@ -52,7 +72,6 @@ export default function Room(props: RoomProps) {
       <Typography variant="h4" gutterBottom>
         Room {id}
       </Typography>
-
       <Typography variant="h6" gutterBottom>
         Users
       </Typography>
@@ -63,7 +82,6 @@ export default function Room(props: RoomProps) {
           </ListItem>
         ))}
       </List>
-
       <Typography variant="h6" gutterBottom>
         Vote
       </Typography>
@@ -72,6 +90,9 @@ export default function Room(props: RoomProps) {
       <Button onClick={() => handleVote('M')}>M</Button>
       <Button onClick={() => handleVote('L')}>L</Button>
       <Button onClick={() => handleVote('XL')}>XL</Button>
+      <Button onClick={handleResetVotes} style={{marginLeft: '1rem'}}>
+        Reset Votes
+      </Button>{' '}
     </Container>
   );
 }
