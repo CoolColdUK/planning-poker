@@ -10,6 +10,7 @@ import mapUserToVoteUser from '../helper/mapUserToVoteUser';
 import {useSubscribeRoom} from '../hook/useSubscribeRoom';
 import VoteSummaryPieChart from './VoteSummaryPieChart';
 import {summariseUserVotes} from '../helper/summariseUserVotes';
+import isUserVoted from '../helper/isUserVoted';
 
 // const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042', '#9966FF', '#FF9999', '#33CCCC'];
 
@@ -79,9 +80,11 @@ export default function Room(props: RoomProps) {
                 primary={user.displayName}
                 secondary={
                   hasAllUsersVoted(room)
-                    ? user.vote === VoteEnum.SKIP
-                      ? 'Skipped'
-                      : `Voted: ${user.vote}`
+                    ? user.vote
+                      ? `Voted: ${user.vote}`
+                      : 'Not voted'
+                    : isUserVoted(user)
+                    ? 'Voted'
                     : 'Not voted'
                 }
               />

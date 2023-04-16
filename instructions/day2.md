@@ -420,3 +420,7 @@ hide the user's vote until all users have voted
 ## Question 26
 
 why change rechart to react-chartjs-2? only use one chart package please
+
+## Question 27
+
+it is showing the vote again. Votes should only be shown when everyone has voted
