@@ -307,3 +307,6 @@ modify room such that if a room does not exists, it will create it on the fly
 
 refactor check and create room into custom hook called `useSubscribeRoom`, which take a room name as parameter, checks and create room if required, then subscribe to it automatically
 
+## Question 21
+
+when id is undefined, maybe use uuid to generate a random room name of 4 character long. remove create-room component and make the create-room button to visit /rooms directly so the rooms page also act as create-room page

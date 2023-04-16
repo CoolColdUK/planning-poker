@@ -1,14 +1,12 @@
 import {Button, Container, List, ListItem, ListItemText, Typography} from '@mui/material';
 import {User} from 'firebase/auth';
 import {Cell, Pie, PieChart, ResponsiveContainer} from 'recharts';
-
-import {doc, getDoc, onSnapshot, serverTimestamp, setDoc, updateDoc} from 'firebase/firestore';
-import {useEffect, useState} from 'react';
+import {doc, updateDoc} from 'firebase/firestore';
 import {useParams} from 'react-router-dom';
+import {v4 as uuidv4} from 'uuid';
+import {VoteEnum} from '../enum/VoteEnum';
 import {firestore} from '../firebaseConfig'; // Adjust the import path if necessary
 import mapUserToVoteUser from '../helper/mapUserToVoteUser';
-import {RoomData} from '../interface/RoomData';
-import {VoteEnum} from '../enum/VoteEnum';
 import {useSubscribeRoom} from '../hook/useSubscribeRoom';
 
 const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042', '#9966FF', '#FF9999', '#33CCCC'];
@@ -20,7 +18,8 @@ export interface RoomProps {
 export default function Room(props: RoomProps) {
   const {id} = useParams<'id'>();
 
-  const room = useSubscribeRoom(id, props.user);
+  const roomId = id || uuidv4().slice(0, 4);
+  const room = useSubscribeRoom(roomId, props.user);
 
   const handleVote = async (vote: VoteEnum) => {
     if (!id) return;

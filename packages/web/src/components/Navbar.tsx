@@ -21,7 +21,7 @@ export default function Navbar({user}: NavbarProps) {
               <Button component={Link} to="/" color="inherit">
                 Home
               </Button>
-              <Button component={Link} to="/create-room" color="inherit">
+              <Button component={Link} to="/rooms" color="inherit">
                 Create Room
               </Button>
               {/* Add more links as needed */}
