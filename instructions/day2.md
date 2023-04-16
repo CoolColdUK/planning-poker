@@ -227,3 +227,8 @@ rebaseError: Function arrayUnion() called with invalid data. Unsupported field v
 
 ror updating vote:  FirebaseError: Function updateDoc() called with invalid data. Unsupported field value: a custom ProactiveRefresh object (found in field users.LiywZ7OuhPWFs7H9mFif8DqNHZl1.proactiveRefresh in document rooms/kX4cPZzzFMAd8xhOhH2L)
 o
+
+## Question 8
+
+create a bar menu at the top to access various links
+

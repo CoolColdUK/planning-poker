@@ -1,10 +1,11 @@
-import {useState, useEffect} from 'react';
-import {BrowserRouter as Router, Route, Routes as RR} from 'react-router-dom';
-import {onAuthStateChanged, User} from 'firebase/auth';
+import {User, onAuthStateChanged} from 'firebase/auth';
+import {useEffect, useState} from 'react';
+import {Routes as RR, Route, BrowserRouter as Router} from 'react-router-dom';
 import {firebaseAuth} from '../firebaseConfig'; // Adjust the import path if necessary
 import App from './App';
-import Login from './Login'; // Adjust the import path if necessary
 import CreateRoom from './CreateRoom';
+import Login from './Login'; // Adjust the import path if necessary
+import Navbar from './Navbar';
 import Room from './Rooms';
 
 export default function Routes() {
@@ -19,6 +20,7 @@ export default function Routes() {
 
   return (
     <Router>
+      <Navbar user={user} />
       <RR>
         <Route path="/login" element={<Login onUserChanged={setUser} />} />
         <Route path="/create-room" element={user ? <CreateRoom user={user} /> : <Login onUserChanged={setUser} />} />
