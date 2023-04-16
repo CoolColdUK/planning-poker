@@ -515,3 +515,8 @@ export const useSubscribeRoom = (roomId: string, user: User) => {
 };
 
 ```
+
+## Question 30
+
+once again, there is no useHistory in this version of react-router-dom.
+also this hook becomes fairly messy, is it possible to split it into multiple hooks instead?

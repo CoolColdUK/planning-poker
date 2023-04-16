@@ -11,6 +11,8 @@ import {useSubscribeRoom} from '../hook/useSubscribeRoom';
 import VoteSummaryPieChart from './VoteSummaryPieChart';
 import {summariseUserVotes} from '../helper/summariseUserVotes';
 import isUserVoted from '../helper/isUserVoted';
+import {useRemoveUserFromRoom} from '../hook/useRemoveUserFromRoom';
+import {useCheckAndCreateRoom} from '../hook/useCheckAndCreateRoom';
 
 // const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042', '#9966FF', '#FF9999', '#33CCCC'];
 
@@ -22,7 +24,10 @@ export default function Room(props: RoomProps) {
   const {id} = useParams<'id'>();
 
   const roomId = id || uuidv4().slice(0, 4);
+
+  useCheckAndCreateRoom(roomId, props.user);
   const room = useSubscribeRoom(roomId, props.user);
+  useRemoveUserFromRoom(roomId, props.user);
 
   const handleVote = async (vote: VoteEnum) => {
     if (!id) return;
