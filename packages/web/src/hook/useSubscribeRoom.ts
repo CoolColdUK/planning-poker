@@ -1,20 +1,19 @@
 // useSubscribeRoom.ts
 
-import {useEffect, useState} from 'react';
+import {User} from 'firebase/auth';
 import {doc, onSnapshot} from 'firebase/firestore';
+import {useEffect, useRef, useState} from 'react';
 import {firestore} from '../firebaseConfig';
 import {RoomData} from '../interface/RoomData';
-import {User} from 'firebase/auth';
 
-export const useSubscribeRoom = (roomId: string, _user: User) => {
+export const useSubscribeRoom = (roomId: string, user: User) => {
   const [room, setRoom] = useState<RoomData | null>(null);
+  const roomRef = useRef(doc(firestore, 'rooms', roomId));
 
   useEffect(() => {
     if (!roomId) return;
 
-    const roomRef = doc(firestore, 'rooms', roomId);
-
-    const unsubscribe = onSnapshot(roomRef, (snapshot) => {
+    const unsubscribe = onSnapshot(roomRef.current, (snapshot) => {
       if (snapshot.exists()) {
         setRoom(snapshot.data() as RoomData);
       } else {
@@ -25,7 +24,7 @@ export const useSubscribeRoom = (roomId: string, _user: User) => {
     return () => {
       unsubscribe();
     };
-  }, [roomId]);
+  }, [roomId, user]);
 
   return room;
 };
