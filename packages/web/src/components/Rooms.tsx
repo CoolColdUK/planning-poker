@@ -1,19 +1,10 @@
 import {Button, Container, List, ListItem, ListItemText, Typography} from '@mui/material';
-import {Timestamp, arrayUnion, doc, onSnapshot, updateDoc} from 'firebase/firestore';
+import {User} from 'firebase/auth';
+import {arrayUnion, doc, onSnapshot, updateDoc} from 'firebase/firestore';
 import {useEffect, useState} from 'react';
 import {useParams} from 'react-router-dom';
 import {firestore} from '../firebaseConfig'; // Adjust the import path if necessary
-import {User} from 'firebase/auth';
-
-interface VoteUser extends User {
-  vote?: string;
-}
-
-interface RoomData {
-  createdAt: Timestamp;
-  createdBy: string;
-  users: VoteUser[];
-}
+import {RoomData} from '../interface/RoomData';
 
 export interface RoomProps {
   user: User;
@@ -63,7 +54,7 @@ export default function Room(props: RoomProps) {
         Users
       </Typography>
       <List>
-        {room.users.map((user) => (
+        {Object.values(room.users).map((user) => (
           <ListItem key={user.uid}>
             <ListItemText primary={user.displayName} secondary={user.vote ? `Voted: ${user.vote}` : 'Not voted'} />
           </ListItem>

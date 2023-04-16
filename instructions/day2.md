@@ -71,3 +71,151 @@ please update the createRoom component
 ## Question 4
 
 give me the code for rooms
+
+## Question 5
+
+currently the code are as follow for createRooms and room
+```
+//CreateRoom.tsx
+import {User} from 'firebase/auth';
+import {addDoc, collection, serverTimestamp} from 'firebase/firestore';
+import {useEffect} from 'react';
+import {useNavigate} from 'react-router-dom';
+import {firestore} from '../firebaseConfig'; // Adjust the import path if necessary
+
+interface CreateRoomProps {
+  user: User;
+}
+
+export default function CreateRoom({user}: CreateRoomProps) {
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const createRoom = async () => {
+      const roomRef = collection(firestore, 'rooms');
+      const room = {
+        createdAt: serverTimestamp(),
+        createdBy: user.uid,
+        users: [
+          {
+            uid: user.uid,
+            displayName: user.displayName,
+            photoURL: user.photoURL,
+          },
+        ],
+      };
+
+      try {
+        const docRef = await addDoc(roomRef, room);
+        navigate(`/rooms/${docRef.id}`);
+      } catch (error) {
+        console.error('Error creating room: ', error);
+      }
+    };
+
+    if (user) {
+      createRoom();
+    }
+  }, [user, navigate]);
+
+  return (
+    <div>
+      <h1>Creating room...</h1>
+    </div>
+  );
+}
+
+```
+
+```
+//Rooms.tsx
+import {Button, Container, List, ListItem, ListItemText, Typography} from '@mui/material';
+import {Timestamp, arrayUnion, doc, onSnapshot, updateDoc} from 'firebase/firestore';
+import {useEffect, useState} from 'react';
+import {useParams} from 'react-router-dom';
+import {firestore} from '../firebaseConfig'; // Adjust the import path if necessary
+import {User} from 'firebase/auth';
+
+interface VoteUser extends User {
+  vote?: string;
+}
+
+interface RoomData {
+  createdAt: Timestamp;
+  createdBy: string;
+  users: VoteUser[];
+}
+
+export interface RoomProps {
+  user: User;
+}
+
+export default function Room(props: RoomProps) {
+  const {id} = useParams<'id'>();
+  const [room, setRoom] = useState<RoomData | null>(null);
+
+  useEffect(() => {
+    if (!id) return;
+    const roomRef = doc(firestore, 'rooms', id);
+    const unsubscribe = onSnapshot(roomRef, (snapshot) => {
+      if (snapshot.exists()) {
+        setRoom(snapshot.data() as RoomData);
+      } else {
+        console.error('Room not found');
+      }
+    });
+
+    return () => unsubscribe();
+  }, [id]);
+
+  const handleVote = async (vote: string) => {
+    if (!id) return;
+    const roomRef = doc(firestore, 'rooms', id);
+    try {
+      await updateDoc(roomRef, {
+        users: arrayUnion({...props.user, vote}), // Assumes you have access to the current user object
+      });
+    } catch (error) {
+      console.error('Error updating vote: ', error);
+    }
+  };
+
+  if (!room) {
+    return <h1>Loading...</h1>;
+  }
+
+  return (
+    <Container>
+      <Typography variant="h4" gutterBottom>
+        Room {id}
+      </Typography>
+
+      <Typography variant="h6" gutterBottom>
+        Users
+      </Typography>
+      <List>
+        {room.users.map((user) => (
+          <ListItem key={user.uid}>
+            <ListItemText primary={user.displayName} secondary={user.vote ? `Voted: ${user.vote}` : 'Not voted'} />
+          </ListItem>
+        ))}
+      </List>
+
+      <Typography variant="h6" gutterBottom>
+        Vote
+      </Typography>
+      <Button onClick={() => handleVote('XS')}>XS</Button>
+      <Button onClick={() => handleVote('S')}>S</Button>
+      <Button onClick={() => handleVote('M')}>M</Button>
+      <Button onClick={() => handleVote('L')}>L</Button>
+      <Button onClick={() => handleVote('XL')}>XL</Button>
+    </Container>
+  );
+}
+
+```
+
+modify it to use map data structure instead of array in the room interface
+
+also create a new VoteUser interface in separate file
+
