@@ -8,6 +8,7 @@ import {useParams} from 'react-router-dom';
 import {firestore} from '../firebaseConfig'; // Adjust the import path if necessary
 import mapUserToVoteUser from '../helper/mapUserToVoteUser';
 import {RoomData} from '../interface/RoomData';
+import {VoteEnum} from '../enum/VoteEnum';
 
 const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042', '#9966FF', '#FF9999', '#33CCCC'];
 
@@ -33,7 +34,7 @@ export default function Room(props: RoomProps) {
     return () => unsubscribe();
   }, [id]);
 
-  const handleVote = async (vote: string | 'skip') => {
+  const handleVote = async (vote: VoteEnum) => {
     if (!id) return;
     const roomRef = doc(firestore, 'rooms', id);
 
@@ -122,12 +123,12 @@ export default function Room(props: RoomProps) {
       <Typography variant="h6" gutterBottom>
         Vote
       </Typography>
-      <Button onClick={() => handleVote('XS')}>XS</Button>
-      <Button onClick={() => handleVote('S')}>S</Button>
-      <Button onClick={() => handleVote('M')}>M</Button>
-      <Button onClick={() => handleVote('L')}>L</Button>
-      <Button onClick={() => handleVote('XL')}>XL</Button>
-      <Button onClick={() => handleVote('skip')}>Skip</Button>
+      <Button onClick={() => handleVote(VoteEnum.XS)}>{VoteEnum.XS}</Button>
+      <Button onClick={() => handleVote(VoteEnum.S)}>{VoteEnum.S}</Button>
+      <Button onClick={() => handleVote(VoteEnum.M)}>{VoteEnum.M}</Button>
+      <Button onClick={() => handleVote(VoteEnum.L)}>{VoteEnum.L}</Button>
+      <Button onClick={() => handleVote(VoteEnum.XL)}>{VoteEnum.XL}</Button>
+      <Button onClick={() => handleVote(VoteEnum.SKIP)}>{VoteEnum.SKIP}</Button>
       <Button onClick={handleResetVotes} style={{marginLeft: '1rem'}}>
         Reset Votes
       </Button>{' '}

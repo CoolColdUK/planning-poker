@@ -4,6 +4,7 @@ import {useEffect} from 'react';
 import {useNavigate} from 'react-router-dom';
 import {firestore} from '../firebaseConfig'; // Adjust the import path if necessary
 import mapUserToVoteUser from '../helper/mapUserToVoteUser';
+import {VoteEnum} from '../enum/VoteEnum';
 
 interface CreateRoomProps {
   user: User;
@@ -15,12 +16,11 @@ export default function CreateRoom({user}: CreateRoomProps) {
   useEffect(() => {
     const createRoom = async () => {
       const roomRef = collection(firestore, 'rooms');
-      const voteUser = mapUserToVoteUser(user);
       const room = {
         createdAt: serverTimestamp(),
         createdBy: user.uid,
         users: {
-          [voteUser.uid]: voteUser,
+          [user.uid]: mapUserToVoteUser(user, VoteEnum.NOT_VOTED),
         },
       };
 

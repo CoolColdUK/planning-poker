@@ -281,3 +281,20 @@ same error, this time with vote
 Error creating room:  FirebaseError: Function addDoc() called with invalid data. Unsupported field value: undefined (found in field users.LiywZ7OuhPWFs7H9mFif8DqNHZl1.vote in document rooms/pRqeyPlvGPhUku5JIxYE) 
 
 I have put `mapUserToVoteUser` in mapUserToVoteUser.ts as I prefer one function per file. It is using default export
+
+## Question 18
+
+Matthew So
+I have created VoteEnum with the following content
+```
+export enum VoteEnum {
+  XS = 'XS',
+  S = 'S',
+  M = 'M',
+  L = 'L',
+  XL = 'XL',
+  SKIP = 'Skip',
+  NOT_VOTED = 'Not Voted',
+}
+```
+PLease update to use that instead in the various functions. Also use not vote for default vote
