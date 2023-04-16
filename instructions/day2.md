@@ -269,3 +269,8 @@ also can we use skip string as vote instead of null, otherwise it will appear as
 ## Question 15
 
 create a function in separate file called `mapUserToVoteUser` to convert User to VoteUser
+
+## Question 16
+
+I cannot create room anymore
+Error creating room:  FirebaseError: Function addDoc() called with invalid data. Unsupported field value: undefined
