@@ -3,6 +3,7 @@
 import {User} from 'firebase/auth';
 import {deleteField, doc, getDoc, onSnapshot, serverTimestamp, setDoc, updateDoc} from 'firebase/firestore';
 import {useEffect, useRef, useState} from 'react';
+import {useHistory} from 'react-router-dom';
 import {firestore} from '../firebaseConfig';
 import {VoteEnum} from '../enum/VoteEnum';
 import mapUserToVoteUser from '../helper/mapUserToVoteUser';
@@ -11,6 +12,38 @@ import {RoomData} from '../interface/RoomData';
 export const useSubscribeRoom = (roomId: string, user: User) => {
   const [room, setRoom] = useState<RoomData | null>(null);
   const roomRef = useRef(doc(firestore, 'rooms', roomId));
+
+  const history = useHistory();
+
+  useEffect(() => {
+    const removeUserFromRoom = async () => {
+      try {
+        await updateDoc(roomRef.current, {
+          [`users.${user.uid}`]: deleteField(),
+        });
+      } catch (error) {
+        console.error('Error removing user from room:', error);
+      }
+    };
+
+    const onUnload = async () => {
+      await removeUserFromRoom();
+    };
+
+    const unlisten = history.listen(async ({action}) => {
+      if (action === 'POP' || action === 'PUSH') {
+        await removeUserFromRoom();
+      }
+    });
+
+    window.addEventListener('beforeunload', onUnload);
+
+    return () => {
+      unlisten();
+      unsubscribe();
+      window.removeEventListener('beforeunload', onUnload);
+    };
+  }, [roomId, user, history]);
 
   useEffect(() => {
     if (!roomId) return;
