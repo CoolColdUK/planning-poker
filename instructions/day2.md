@@ -404,3 +404,7 @@ export const useSubscribeRoom = (roomId: string, user: User) => {
 ```
 
 are there any missing functionality from the original plan?
+
+## Question 24
+
+hide the user's vote until all users have voted

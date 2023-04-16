@@ -8,6 +8,7 @@ import {VoteEnum} from '../enum/VoteEnum';
 import {firestore} from '../firebaseConfig'; // Adjust the import path if necessary
 import mapUserToVoteUser from '../helper/mapUserToVoteUser';
 import {useSubscribeRoom} from '../hook/useSubscribeRoom';
+import {VoteUser} from '../interface/VoteUser';
 
 const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042', '#9966FF', '#FF9999', '#33CCCC'];
 
@@ -20,6 +21,14 @@ export default function Room(props: RoomProps) {
 
   const roomId = id || uuidv4().slice(0, 4);
   const room = useSubscribeRoom(roomId, props.user);
+
+  const allUsersVoted = () => {
+    if (!room) return false;
+
+    return Object.values(room.users).every(
+      (user: VoteUser) => user.vote !== VoteEnum.NOT_VOTED && user.vote !== VoteEnum.SKIP,
+    );
+  };
 
   const handleVote = async (vote: VoteEnum) => {
     if (!id) return;
@@ -100,9 +109,20 @@ export default function Room(props: RoomProps) {
       </Typography>
       {room && room.users && (
         <List>
-          {Object.entries(room.users).map(([uid, user]) => (
-            <ListItem key={uid}>
-              <ListItemText primary={user.displayName} secondary={user.vote ? `Voted: ${user.vote}` : 'Not voted'} />
+          {Object.values(room.users).map((user) => (
+            <ListItem key={user.uid}>
+              <ListItemText
+                primary={user.displayName}
+                secondary={
+                  allUsersVoted()
+                    ? user.vote === VoteEnum.SKIP
+                      ? 'Skipped'
+                      : `Voted: ${user.vote}`
+                    : user.vote === VoteEnum.NOT_VOTED || user.vote === VoteEnum.SKIP
+                    ? 'Not voted'
+                    : 'Voted'
+                }
+              />
             </ListItem>
           ))}
         </List>
