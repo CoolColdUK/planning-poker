@@ -274,3 +274,10 @@ create a function in separate file called `mapUserToVoteUser` to convert User to
 
 I cannot create room anymore
 Error creating room:  FirebaseError: Function addDoc() called with invalid data. Unsupported field value: undefined
+
+## Question 17
+
+same error, this time with vote
+Error creating room:  FirebaseError: Function addDoc() called with invalid data. Unsupported field value: undefined (found in field users.LiywZ7OuhPWFs7H9mFif8DqNHZl1.vote in document rooms/pRqeyPlvGPhUku5JIxYE) 
+
+I have put `mapUserToVoteUser` in mapUserToVoteUser.ts as I prefer one function per file. It is using default export
