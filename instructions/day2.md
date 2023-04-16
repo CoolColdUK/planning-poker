@@ -302,3 +302,8 @@ PLease update to use that instead in the various functions. Also use not vote fo
 ## Question 19
 
 modify room such that if a room does not exists, it will create it on the fly
+
+## Question 20
+
+refactor check and create room into custom hook called `useSubscribeRoom`, which take a room name as parameter, checks and create room if required, then subscribe to it automatically
+

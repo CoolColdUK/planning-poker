@@ -9,6 +9,7 @@ import {firestore} from '../firebaseConfig'; // Adjust the import path if necess
 import mapUserToVoteUser from '../helper/mapUserToVoteUser';
 import {RoomData} from '../interface/RoomData';
 import {VoteEnum} from '../enum/VoteEnum';
+import {useSubscribeRoom} from '../hook/useSubscribeRoom';
 
 const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042', '#9966FF', '#FF9999', '#33CCCC'];
 
@@ -18,54 +19,8 @@ export interface RoomProps {
 
 export default function Room(props: RoomProps) {
   const {id} = useParams<'id'>();
-  const [room, setRoom] = useState<RoomData | null>(null);
 
-  useEffect(() => {
-    if (!id) return;
-    const roomRef = doc(firestore, 'rooms', id);
-    const unsubscribe = onSnapshot(roomRef, (snapshot) => {
-      if (snapshot.exists()) {
-        setRoom(snapshot.data() as RoomData);
-      } else {
-        console.error('Room not found');
-      }
-    });
-
-    return () => unsubscribe();
-  }, [id]);
-
-  useEffect(() => {
-    if (!id) return;
-
-    const roomRef = doc(firestore, 'rooms', id);
-
-    const checkAndCreateRoom = async () => {
-      const roomSnapshot = await getDoc(roomRef);
-
-      if (!roomSnapshot.exists()) {
-        const newRoom = {
-          createdAt: serverTimestamp(),
-          createdBy: props.user.uid,
-          users: {
-            [props.user.uid]: mapUserToVoteUser(props.user, VoteEnum.NOT_VOTED),
-          },
-        };
-        await setDoc(roomRef, newRoom);
-      }
-    };
-
-    checkAndCreateRoom();
-
-    const unsubscribe = onSnapshot(roomRef, (snapshot) => {
-      if (snapshot.exists()) {
-        setRoom(snapshot.data() as RoomData);
-      } else {
-        console.error('Room not found');
-      }
-    });
-
-    return () => unsubscribe();
-  }, [id, props.user]);
+  const room = useSubscribeRoom(id, props.user);
 
   const handleVote = async (vote: VoteEnum) => {
     if (!id) return;
