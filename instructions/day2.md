@@ -242,3 +242,6 @@ got these two errors
 - 'room.users.map' is possibly 'undefined'.ts(18048)
 - Module '"firebase/firestore"' has no exported member 'update'.
 
+## Question 11
+
+where does `room` variable comes from?

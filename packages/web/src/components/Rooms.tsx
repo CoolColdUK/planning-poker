@@ -44,11 +44,11 @@ export default function Room(props: RoomProps) {
   };
 
   const handleResetVotes = async () => {
-    if (!id) return;
+    if (!id || !room) return;
     const roomRef = doc(firestore, 'rooms', id);
 
     try {
-      if (room && room.users) {
+      if (room.users) {
         // Remove all users from the room
         const removeUsersPromises = room.users.map((user) => updateDoc(roomRef, {users: arrayRemove(user)}));
         await Promise.all(removeUsersPromises);
