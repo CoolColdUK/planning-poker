@@ -20,6 +20,6 @@
     "baseUrl": "./src",
     "jsx": "react-jsx"
   },
-  "include": ["src"],
-  "references": [{ "path": "./tsconfig.node.json" }]
+  "include": ["src", "node_modules/vite-plugin-pwa/client.d.ts"],
+  "references": [{"path": "./tsconfig.node.json"}]
 }
