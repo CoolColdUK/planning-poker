@@ -265,3 +265,7 @@ give error: Element implicitly has an 'any' type because expression of type 'str
   No index signature with a parameter of type 'string' was found on type '{ XS: number; S: number; M: number; L: number; XL: number; notVoted: number; skipped: number; }'
 
 also can we use skip string as vote instead of null, otherwise it will appear as Not Voted
+
+## Question 15
+
+create a function in separate file called `mapUserToVoteUser` to convert User to VoteUser

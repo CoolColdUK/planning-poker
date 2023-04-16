@@ -1,11 +1,12 @@
 import {Button, Container, List, ListItem, ListItemText, Typography} from '@mui/material';
 import {User} from 'firebase/auth';
-import {PieChart, Pie, Cell, ResponsiveContainer} from 'recharts';
+import {Cell, Pie, PieChart, ResponsiveContainer} from 'recharts';
 
 import {doc, onSnapshot, updateDoc} from 'firebase/firestore';
 import {useEffect, useState} from 'react';
 import {useParams} from 'react-router-dom';
 import {firestore} from '../firebaseConfig'; // Adjust the import path if necessary
+import mapUserToVoteUser from '../helper/mapUserToVoteUser';
 import {RoomData} from '../interface/RoomData';
 
 const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042', '#9966FF', '#FF9999', '#33CCCC'];
@@ -35,13 +36,11 @@ export default function Room(props: RoomProps) {
   const handleVote = async (vote: string | 'skip') => {
     if (!id) return;
     const roomRef = doc(firestore, 'rooms', id);
-    const {proactiveRefresh, ...currentUser} = props.user; // Remove the proactiveRefresh property
+
+    const voteUser = mapUserToVoteUser(props.user, vote);
     try {
       await updateDoc(roomRef, {
-        [`users.${props.user.uid}`]: {
-          ...currentUser,
-          vote,
-        },
+        [`users.${props.user.uid}`]: voteUser,
       });
     } catch (error) {
       console.error('Error updating vote: ', error);
@@ -143,7 +142,7 @@ export default function Room(props: RoomProps) {
             outerRadius={150}
             fill="#8884d8"
           >
-            {calculateVoteSummary().map((entry, index) => (
+            {calculateVoteSummary().map((_entry, index) => (
               <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
             ))}
           </Pie>
