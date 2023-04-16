@@ -310,3 +310,9 @@ refactor check and create room into custom hook called `useSubscribeRoom`, which
 ## Question 21
 
 when id is undefined, maybe use uuid to generate a random room name of 4 character long. remove create-room component and make the create-room button to visit /rooms directly so the rooms page also act as create-room page
+
+## Question 22
+
+- add label to pie chart to identify what is selected
+- when the browser closed, the user should no longer be listed
+- when the user first visit the room, everyone should know

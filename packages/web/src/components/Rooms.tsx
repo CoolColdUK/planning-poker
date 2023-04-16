@@ -127,6 +127,8 @@ export default function Room(props: RoomProps) {
             nameKey="name"
             cx="50%"
             cy="50%"
+            labelLine={false}
+            label={({name, percent}) => `${name}: ${(percent * 100).toFixed(0)}%`} // Add this line
             outerRadius={150}
             fill="#8884d8"
           >
