@@ -1,7 +1,7 @@
 import {User} from 'firebase/auth';
 import {serverTimestamp, setDoc} from 'firebase/firestore';
 import {VoteEnum} from '../../enum/VoteEnum';
-import mapUserToVoteUser from '../mapUserToVoteUser';
+import mapUserToVoteUser from '../map/mapUserToVoteUser';
 import getRoomDoc from './getRoomDoc';
 
 export default function createRoom(roomId: string, user?: User) {
