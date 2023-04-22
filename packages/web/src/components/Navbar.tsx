@@ -1,5 +1,5 @@
 // Navbar.tsx
-import {AppBar, Button, TextField, Toolbar, Typography} from '@mui/material';
+import {AppBar, Button, Snackbar, TextField, Toolbar} from '@mui/material';
 import {Box} from '@mui/system';
 import {User} from 'firebase/auth';
 import {useState} from 'react';
@@ -11,6 +11,7 @@ interface NavbarProps {
 
 export default function Navbar({user}: NavbarProps) {
   const [roomId, setRoomId] = useState('');
+  const [message, setMessage] = useState<string | null>(null);
   const navigate = useNavigate();
 
   const handleRoomIdChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -20,14 +21,25 @@ export default function Navbar({user}: NavbarProps) {
   const handleJoinRoom = () => {
     if (roomId) {
       navigate(`/rooms/${roomId}`);
+    } else {
+      setMessage('Please set a room');
     }
   };
   return (
     <AppBar position="static">
+      <Snackbar
+        open={!!message}
+        autoHideDuration={6000}
+        onClose={() => setMessage(null)}
+        message={message}
+        anchorOrigin={{vertical: 'top', horizontal: 'right'}}
+      />
       <Toolbar>
-        <Typography variant="h6" component="div" sx={{flexGrow: 1}}>
-          App Name
-        </Typography>
+        <Box sx={{flexGrow: 1}}>
+          <Button component={Link} to="/" color="inherit">
+            Poker
+          </Button>
+        </Box>
         <Box sx={{display: 'flex', alignItems: 'center'}}>
           {user ? (
             <>
@@ -41,12 +53,6 @@ export default function Navbar({user}: NavbarProps) {
               />
               <Button onClick={handleJoinRoom} variant="contained" color="primary">
                 Join Room
-              </Button>
-              <Button component={Link} to="/" color="inherit">
-                Home
-              </Button>
-              <Button component={Link} to="/rooms" color="inherit">
-                Create Room
               </Button>
               {/* Add more links as needed */}
             </>
