@@ -6,13 +6,11 @@ import {v4 as uuidv4} from 'uuid';
 import {VoteEnum} from '../enum/VoteEnum';
 import {firestore} from '../firebaseConfig'; // Adjust the import path if necessary
 import {hasAllUsersVoted} from '../helper/hasAllUsersVoted';
-import mapUserToVoteUser from '../helper/mapUserToVoteUser';
+import isUserVoted from '../helper/isUserVoted';
+import addRoomUser from '../helper/room/addRoomUser';
+import {summariseUserVotes} from '../helper/summariseUserVotes';
 import {useSubscribeRoom} from '../hook/useSubscribeRoom';
 import VoteSummaryPieChart from './VoteSummaryPieChart';
-import {summariseUserVotes} from '../helper/summariseUserVotes';
-import isUserVoted from '../helper/isUserVoted';
-import {useRemoveUserFromRoom} from '../hook/useRemoveUserFromRoom';
-import {useCheckAndCreateRoom} from '../hook/useCheckAndCreateRoom';
 
 // const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042', '#9966FF', '#FF9999', '#33CCCC'];
 
@@ -25,19 +23,12 @@ export default function Room(props: RoomProps) {
 
   const roomId = id || uuidv4().slice(0, 4);
 
-  useCheckAndCreateRoom(roomId, props.user);
-  const room = useSubscribeRoom(roomId, props.user);
-  useRemoveUserFromRoom(roomId, props.user);
+  const room = useSubscribeRoom(props.user, roomId);
 
   const handleVote = async (vote: VoteEnum) => {
-    if (!id) return;
-    const roomRef = doc(firestore, 'rooms', id);
-
-    const voteUser = mapUserToVoteUser(props.user, vote);
+    console.log('handle', vote);
     try {
-      await updateDoc(roomRef, {
-        [`users.${props.user.uid}`]: voteUser,
-      });
+      await addRoomUser(roomId, props.user, vote);
     } catch (error) {
       console.error('Error updating vote: ', error);
     }

@@ -1,33 +1,27 @@
-// useCheckAndCreateRoom.ts
-
-import {useEffect, useRef} from 'react';
-import {doc, getDoc, setDoc, serverTimestamp} from 'firebase/firestore';
-import {firestore} from '../firebaseConfig';
-import {VoteEnum} from '../enum/VoteEnum';
-import mapUserToVoteUser from '../helper/mapUserToVoteUser';
 import {User} from 'firebase/auth';
+import {useEffect, useState} from 'react';
+import createRoom from '../helper/room/createRoom';
+import isRoomExists from '../helper/room/isRoomExists';
 
-export const useCheckAndCreateRoom = (roomId: string, user: User) => {
-  const roomRef = useRef(doc(firestore, 'rooms', roomId));
+export const useCheckAndCreateRoom = (user: User, roomId: string) => {
+  const [currentRoomId, setCurrentRoomId] = useState<string | null>(null);
+  console.log('useCheckAndCreateRoom', roomId);
 
   useEffect(() => {
     if (!roomId) return;
+    console.log('join');
 
-    const checkAndCreateRoom = async () => {
-      const roomSnapshot = await getDoc(roomRef.current);
+    async function join() {
+      const roomExists = await isRoomExists(roomId);
 
-      if (!roomSnapshot.exists()) {
-        const newRoom = {
-          createdAt: serverTimestamp(),
-          createdBy: user.uid,
-          users: {
-            [user.uid]: mapUserToVoteUser(user, VoteEnum.NOT_VOTED),
-          },
-        };
-        await setDoc(roomRef.current, newRoom);
+      if (!roomExists) {
+        console.log('create');
+        await createRoom(roomId, user);
       }
-    };
 
-    checkAndCreateRoom();
+      setCurrentRoomId(roomId);
+    }
+    join();
   }, [roomId, user]);
+  return currentRoomId;
 };
