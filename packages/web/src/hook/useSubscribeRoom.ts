@@ -3,8 +3,8 @@
 import {User} from 'firebase/auth';
 import {onSnapshot} from 'firebase/firestore';
 import {useEffect, useState} from 'react';
+import addRoomUser from '../helper/room/addRoomUser';
 import getRoomDoc from '../helper/room/getRoomDoc';
-import removeRoom from '../helper/room/removeRoom';
 import removeRoomUser from '../helper/room/removeRoomUser';
 import {RoomData} from '../interface/RoomData';
 import {useCheckAndCreateRoom} from './useCheckAndCreateRoom';
@@ -13,18 +13,28 @@ export const useSubscribeRoom = (user: User, roomId: string) => {
   const [room, setRoom] = useState<RoomData | null>(null);
   const currentRoomId = useCheckAndCreateRoom(user, roomId);
 
-  console.log('useSubscribeRoom', currentRoomId, user);
+  console.log('useSubscribeRoom', currentRoomId);
 
   useEffect(() => {
-    if (!currentRoomId) return;
+    if (!currentRoomId) {
+      setRoom(null);
+      return;
+    }
+
     console.log(`useSubscribeRoom - subscribe ${currentRoomId}`);
 
     const subscribe = () =>
       onSnapshot(getRoomDoc(currentRoomId), (snapshot) => {
-        console.log('in');
+        // console.log('in');
         if (snapshot.exists()) {
-          setRoom(snapshot.data() as RoomData);
+          const data = snapshot.data();
+          setRoom(data);
+          if (!(user.uid in data.users)) {
+            console.log(`useSubscribeRoom - add user ${currentRoomId}`);
+            addRoomUser(currentRoomId, user);
+          }
         } else {
+          setRoom(null);
           // console.error('Room not found');
         }
       });
@@ -32,22 +42,23 @@ export const useSubscribeRoom = (user: User, roomId: string) => {
     const unsubscribe = subscribe();
 
     return () => {
-      console.log('useSubscribeRoom - unsubscribe');
+      console.log(`useSubscribeRoom - unsubscribe from ${currentRoomId}, room content ${JSON.stringify(room)}`);
       unsubscribe();
-      if (!room) return;
+      removeRoomUser(currentRoomId, user);
+      // if (!room) return;
 
-      const numberOfUsers = Object.keys(room.users).length;
-      console.log(`useSubscribeRoom - remove ${numberOfUsers}`);
-      if (numberOfUsers > 1) {
-        console.log(`remove user from room ${currentRoomId}`);
-        removeRoomUser(currentRoomId, user);
-      } else {
-        console.log(`remove room ${currentRoomId}`);
-        removeRoom(currentRoomId);
-      }
+      // const numberOfUsers = Object.keys(room.users).length;
+      // console.log(`useSubscribeRoom - remove, user count #${numberOfUsers}, users: ${Object.keys(room.users).join(',')}`);
+      // if (numberOfUsers === 1 && isUserInRoom(room, user)) {
+      //   console.log(`remove room ${currentRoomId}`);
+      //   removeRoom(currentRoomId);
+      // } else {
+      //   console.log(`remove user from room ${currentRoomId}`);
+      //   removeRoomUser(currentRoomId, user);
+      // }
     };
   }, [currentRoomId, user]);
 
-  console.log('room', currentRoomId, room);
+  console.log('room', currentRoomId, roomId, room?.users);
   return room;
 };
