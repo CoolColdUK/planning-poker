@@ -14,19 +14,19 @@
     "watch": "nodemon --watch src -e ts,tsx -x \"npm run build\""
   },
   "dependencies": {
-    "@apollo/server": "^4.5.0",
+    "@apollo/server": "^4.7.0",
     "body-parser": "^1.20.2",
     "cors": "^2.8.5",
     "express": "^4.18.2",
-    "firebase-admin": "^11.5.0",
-    "firebase-functions": "^4.2.1",
+    "firebase-admin": "^11.7.0",
+    "firebase-functions": "^4.3.1",
     "graphql": "^16.6.0"
   },
   "devDependencies": {
     "@template/eslint-config": "^1.0.0",
     "@template/jest-config": "^1.0.0",
     "@template/ts-config": "^1.0.0",
-    "firebase-functions-test": "^3.0.0"
+    "firebase-functions-test": "^3.1.0"
   },
   "engines": {
     "node": "16"

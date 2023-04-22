@@ -2,6 +2,12 @@ import {createTheme, CssBaseline, ThemeProvider} from '@mui/material';
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import Routes from './components/Routes';
+// import { registerSW } from "virtual:pwa-register";
+
+// if ("serviceWorker" in navigator) {
+//   // && !/localhost/.test(window.location)) {
+//   registerSW();
+// }
 
 const theme = createTheme();
 
