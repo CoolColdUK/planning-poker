@@ -8,14 +8,26 @@ import {firestore} from '../firebaseConfig'; // Adjust the import path if necess
 import {hasAllUsersVoted} from '../helper/hasAllUsersVoted';
 import isUserVoted from '../helper/isUserVoted';
 import addRoomUser from '../helper/room/addRoomUser';
+import sortUserDisplayName from '../helper/sort/sortUserDisplayName';
 import {summariseUserVotes} from '../helper/summariseUserVotes';
 import {useSubscribeRoom} from '../hook/useSubscribeRoom';
+import {RoomData} from '../interface/RoomData';
+import {VoteUser} from '../interface/VoteUser';
 import VoteSummaryPieChart from './VoteSummaryPieChart';
 
 // const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042', '#9966FF', '#FF9999', '#33CCCC'];
 
 export interface RoomProps {
   user: User;
+}
+
+function getUserVoteDisplay(room: RoomData, user: VoteUser) {
+  if (hasAllUsersVoted(room)) {
+    // all user voted, show actual vote
+    return user.vote ? `Voted: ${user.vote}` : 'Not voted';
+  }
+
+  return isUserVoted(user) ? 'Voted' : 'Not voted';
 }
 
 export default function Room(props: RoomProps) {
@@ -60,6 +72,7 @@ export default function Room(props: RoomProps) {
     return <h1>Loading...</h1>;
   }
 
+  const users = Object.values(room.users).sort(sortUserDisplayName);
   return (
     <Container>
       <Typography variant="h4" gutterBottom>
@@ -70,20 +83,9 @@ export default function Room(props: RoomProps) {
       </Typography>
       {room && room.users && (
         <List>
-          {Object.values(room.users).map((user) => (
+          {users.map((user) => (
             <ListItem key={user.uid}>
-              <ListItemText
-                primary={user.displayName}
-                secondary={
-                  hasAllUsersVoted(room)
-                    ? user.vote
-                      ? `Voted: ${user.vote}`
-                      : 'Not voted'
-                    : isUserVoted(user)
-                    ? 'Voted'
-                    : 'Not voted'
-                }
-              />
+              <ListItemText primary={user.displayName} secondary={getUserVoteDisplay(room, user)} />
             </ListItem>
           ))}
         </List>
@@ -91,12 +93,9 @@ export default function Room(props: RoomProps) {
       <Typography variant="h6" gutterBottom>
         Vote
       </Typography>
-      <Button onClick={() => handleVote(VoteEnum.XS)}>{VoteEnum.XS}</Button>
-      <Button onClick={() => handleVote(VoteEnum.S)}>{VoteEnum.S}</Button>
-      <Button onClick={() => handleVote(VoteEnum.M)}>{VoteEnum.M}</Button>
-      <Button onClick={() => handleVote(VoteEnum.L)}>{VoteEnum.L}</Button>
-      <Button onClick={() => handleVote(VoteEnum.XL)}>{VoteEnum.XL}</Button>
-      <Button onClick={() => handleVote(VoteEnum.SKIP)}>{VoteEnum.SKIP}</Button>
+      {Object.values(VoteEnum).map((e) => (
+        <Button onClick={() => handleVote(e)}>{e}</Button>
+      ))}
       <Button onClick={handleResetVotes} style={{marginLeft: '1rem'}}>
         Reset Votes
       </Button>{' '}
