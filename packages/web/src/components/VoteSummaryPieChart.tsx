@@ -16,7 +16,16 @@ export default function PieChartComponent({summary}: PieChartComponentProps) {
 
   return (
     <PieChart width={400} height={400}>
-      <Pie data={data} cx={200} cy={200} labelLine={false} outerRadius={80} fill="#8884d8" dataKey="value">
+      <Pie
+        data={data}
+        cx={200}
+        cy={200}
+        labelLine={false}
+        label={({name, percent}) => (percent > 0 ? `${name}: ${(percent * 100).toFixed(0)}%` : '')} // Add this line
+        outerRadius={80}
+        fill="#8884d8"
+        dataKey="value"
+      >
         {data.map((_entry, index) => (
           <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
         ))}
